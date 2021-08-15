@@ -33,33 +33,80 @@ const getCurrentProduct = async (product_id, callback) => {
     if (err) {
       console.log(err);
     }
-    callback(null, res.rows);
+    callback(null, res.rows[0]);
   })
 }
 
 const getProductStyle = async (product_id, callback) => {
   const queryString = `
-  SELECT styles.product_id,
-  json_agg(json_build_object('style_id', styles.id, 'name', styles.name, 'original_price', styles.original_price, 'sale_price', styles.sale_price, 'default?', styles.default_style )) AS results
-  FROM products
-  LEFT ON styles
-  ON products.id = styles.product_id
-  LEFT ON photos
-  ON photos.style_id = styles.id
-  LEFT ON skus
-  ON skus.style_id = styles.id
-  WHERE products.id = ${product_id}
+  SELECT
+  styles.product_id,
+  	json_agg(
+      json_build_object(
+        'style_id', styles.id,
+        'name', styles.name,
+        'original_price', styles.original_price,
+        'sale_price', styles.sale_price,
+        'default?', styles.default_style,
+		'photos', photosId.photos,
+		'skus', skusId.skus
+      )
+    ) AS results
+  FROM styles
+  LEFT JOIN(
+    SELECT photos.style_id,
+	  json_agg(
+        json_build_object(
+          'thumbnail_url', photos.thumbnail_id,
+          'url', photos.url
+        )
+      ) AS photos
+	FROM photos
+	GROUP BY photos.style_id
+	) AS photosId ON photosId.style_id = styles.id
+  LEFT JOIN(
+    SELECT skus.style_id,
+	  json_object_agg(
+		skus.id,
+	    json_build_object(
+		  'quantity', skus.quantity,
+          'size', skus.size
+		)
+	  ) AS skus
+	  FROM skus
+	  GROUP BY skus.style_id
+  ) AS skusId ON skusId.style_id = styles.id
+  WHERE styles.product_id = ${product_id}
   GROUP BY styles.product_id
   `;
   await pool.query(queryString, (err, res) => {
     if (err) {
       console.log(err);
     }
-    callback(null, res.rows);
+    callback(null, res.rows[0]);
   })
 }
+
+const getRelatedProducts = async (product_id, callback) => {
+  const queryString = `
+  SELECT
+    json_agg(
+      related.related_product_id
+    ) AS related
+  FROM related
+  WHERE current_product_id = ${product_id}
+  `
+  await pool.query(queryString, (err, res) => {
+    if (err) {
+      console.log(err);
+    }
+    callback(null, res.rows[0].related)
+  })
+}
+
 module.exports = {
   getProducts: getProducts,
   getCurrentProduct: getCurrentProduct,
-  getProductStyle: getProductStyle
+  getProductStyle: getProductStyle,
+  getRelatedProducts: getRelatedProducts
 }

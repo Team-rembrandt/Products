@@ -49,4 +49,16 @@ app.get('/products/:product_id/styles', (req, res) => {
   })
 })
 
+app.get('/products/:product_id/related', (req, res) => {
+  const { product_id } = req.params;
+  db.getRelatedProducts(product_id, (err, result) => {
+    if (err) {
+      res.status(400)
+      console.log(err)
+    }
+    res.status(200)
+    res.send(result);
+  })
+})
+
 app.listen(port, () => console.log(`Successfully connected to the port ${port}`))

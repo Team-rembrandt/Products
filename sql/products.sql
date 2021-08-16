@@ -13,3 +13,8 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.products
     OWNER to postgres;
+
+CREATE INDEX product_id_index
+    ON public.products USING btree
+    (id ASC NULLS LAST)
+    TABLESPACE pg_default;

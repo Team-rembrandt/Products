@@ -48,12 +48,12 @@ const getProductStyle = async (product_id, callback) => {
         'original_price', styles.original_price,
         'sale_price', styles.sale_price,
         'default?', styles.default_style,
-		'photos', photosId.photos,
-		'skus', skusId.skus
+    		'photos', photosId.photos,
+	    	'skus', skusId.skus
       )
     ) AS results
   FROM styles
-  LEFT JOIN(
+  INNER JOIN(
     SELECT photos.style_id,
 	  json_agg(
         json_build_object(
@@ -64,7 +64,7 @@ const getProductStyle = async (product_id, callback) => {
 	FROM photos
 	GROUP BY photos.style_id
 	) AS photosId ON photosId.style_id = styles.id
-  LEFT JOIN(
+  INNER JOIN(
     SELECT skus.style_id,
 	  json_object_agg(
 		skus.id,

@@ -17,7 +17,7 @@ TABLESPACE pg_default;
 ALTER TABLE public.features
     OWNER to postgres;
 
-CREATE INDEX fki_product_id
+CREATE INDEX features_product_index
     ON public.features USING btree
     (product_id ASC NULLS LAST)
     TABLESPACE pg_default;

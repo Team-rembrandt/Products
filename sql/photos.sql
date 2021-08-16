@@ -16,3 +16,8 @@ TABLESPACE pg_default;
 
 ALTER TABLE public.photos
     OWNER to postgres;
+
+CREATE INDEX photos_index
+    ON public.photos USING btree
+    (style_id ASC NULLS LAST)
+    TABLESPACE pg_default;

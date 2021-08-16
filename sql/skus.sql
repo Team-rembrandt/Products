@@ -17,7 +17,7 @@ TABLESPACE pg_default;
 ALTER TABLE public.skus
     OWNER to postgres;
 
-CREATE INDEX fki_style_id
+CREATE INDEX skus_index
     ON public.skus USING btree
     (style_id ASC NULLS LAST)
     TABLESPACE pg_default;

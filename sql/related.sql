@@ -21,12 +21,7 @@ TABLESPACE pg_default;
 ALTER TABLE public.related
     OWNER to postgres;
 
-CREATE INDEX fki_products_id
+CREATE INDEX related_product_id_index
     ON public.related USING btree
     (current_product_id ASC NULLS LAST)
-    TABLESPACE pg_default;
-
-CREATE INDEX fki_related_product_id
-    ON public.related USING btree
-    (related_product_id ASC NULLS LAST)
     TABLESPACE pg_default;

@@ -4,8 +4,10 @@
   "description": "experience back-end development by extracting old data and create new database using postgresql",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon ./server/index.js"
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:detect": "jest --detectOpenHandles",
+    "start": "nodemon ./server/start.js"
   },
   "repository": {
     "type": "git",
@@ -24,6 +26,8 @@
     "pg": "^8.7.1"
   },
   "devDependencies": {
-    "nodemon": "^2.0.12"
+    "jest": "^27.0.6",
+    "nodemon": "^2.0.12",
+    "supertest": "^6.1.5"
   }
 }

@@ -61,4 +61,4 @@ app.get('/products/:product_id/related', (req, res) => {
   })
 })
 
-app.listen(port, () => console.log(`Successfully connected to the port ${port}`))
+module.exports = app;

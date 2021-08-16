@@ -39,46 +39,31 @@ const getCurrentProduct = async (product_id, callback) => {
 
 const getProductStyle = async (product_id, callback) => {
   const queryString = `
-  SELECT
-  styles.product_id,
-  	json_agg(
-      json_build_object(
-        'style_id', styles.id,
-        'name', styles.name,
-        'original_price', styles.original_price,
-        'sale_price', styles.sale_price,
-        'default?', styles.default_style,
-    		'photos', photosId.photos,
-	    	'skus', skusId.skus
-      )
-    ) AS results
-  FROM styles
-  INNER JOIN(
-    SELECT photos.style_id,
-	  json_agg(
-        json_build_object(
-          'thumbnail_url', photos.thumbnail_id,
-          'url', photos.url
-        )
-      ) AS photos
-	FROM photos
-	GROUP BY photos.style_id
-	) AS photosId ON photosId.style_id = styles.id
-  INNER JOIN(
-    SELECT skus.style_id,
-	  json_object_agg(
-		skus.id,
-	    json_build_object(
-		  'quantity', skus.quantity,
-          'size', skus.size
-		)
-	  ) AS skus
-	  FROM skus
-	  GROUP BY skus.style_id
-  ) AS skusId ON skusId.style_id = styles.id
-  WHERE styles.product_id = ${product_id}
-  GROUP BY styles.product_id
-  `;
+  SELECT product_id, json_agg(json_build_object(
+    'style_id', id,
+    'name', name,
+    'original_price', original_price,
+    'sale_price', sale_price,
+    'default?', default_style,
+    'photos',
+    (SELECT json_agg(json_build_object(
+        'thumbnail_url', thumbnail_id,
+        'url', url
+      )) FROM photos WHERE style_id = styles.id),
+  'skus',
+    (SELECT
+        json_object_agg(id,
+            json_build_object(
+          'size', size,
+          'quantity', quantity
+            )
+        ) as skus
+      FROM skus
+      WHERE style_id = styles.id
+          GROUP by style_id)
+  )) as results FROM styles
+      WHERE styles.product_id = ${product_id}
+        GROUP BY product_id`;
   await pool.query(queryString, (err, res) => {
     if (err) {
       console.log(err);

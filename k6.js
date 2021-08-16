@@ -7,6 +7,6 @@ export let options = {
 };
 
 export default function() {
-  http.get(`http://localhost:1004/products/${Math.floor(Math.random() * (1000000 - 1 + 1)) + 1}/related`)
+  http.get(`http://localhost:1004/products/${Math.floor(Math.random() * (1000000 - 1 + 1)) + 1}`)
   sleep(1);
 }

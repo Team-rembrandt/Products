@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require('express');
 const cluster = require('cluster');
 const newrelic = require('newrelic');
@@ -27,6 +28,10 @@ if (cluster.isMaster) {
 
   app.use(morgan('dev'));
   app.use(express.json());
+
+  app.get(`/${process.env.LOADERIO_KEY}`, (req, res) => {
+    res.send(process.env.LOADERIO_KEY);
+  })
 
   app.get('/products', (req, res) => {
     let { page, count } = req.query;

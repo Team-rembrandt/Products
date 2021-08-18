@@ -3,11 +3,10 @@ const { password } = require('../config.js');
 
 const pool = new Pool({
   user: "postgres",
-  host: "localhost",
-  database: "productDB",
+  host: "18.218.26.192",
+  database: "productdb",
   password: password,
   port: 5432,
-  max: 20,
 });
 
 const getProducts = async (page, count, callback) => {

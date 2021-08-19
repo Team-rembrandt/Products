@@ -7,7 +7,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "test:detect": "jest --detectOpenHandles",
-    "start": "nodemon ./server/indexCluster.js"
+    "start": "nodemon ./server/index.js"
   },
   "repository": {
     "type": "git",

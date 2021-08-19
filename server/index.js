@@ -2,7 +2,7 @@ const express = require('express');
 //const newrelic = require('newrelic');
 //const morgan = require('morgan');
 const db = require('../database/database.js');
-const port = 1004;
+const port = 3000;
 const app = express();
 
 //  app.use(morgan('dev'));

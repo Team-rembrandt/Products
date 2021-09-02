@@ -1,4 +1,6 @@
-# SDC-Overview
+#Overview
+
+One of back-end endpoint for e-commerce website. Built it to improve to handle higher user requests.
 
 Extract - I already have clean CSVS file, so I can just import it into the pgadmin and seed it
 Transform - I am going to set up validation specifying type of datas (ex. SERIAL, INTEGER, VARCHAR)
@@ -42,3 +44,22 @@ ETL - photos - adding validation to key columns
   style_id - integer not null foreign key to style's id
   url - varchar not null
   thumbnail_url - varchar not null
+
+Test results - https://dev.to/ehdtlaos/testing-loader-io-after-installing-nginx-7ob
+
+#Features
+
+Can be used horizontally with NGINX.
+Currently using K6 , New Relic, Loader.io ad analytic and testing
+
+#Setup & Insmallation
+
+install dependencies
+``
+npm install
+``
+
+start the server
+``
+npm start
+``

@@ -1,6 +1,6 @@
 # Overview
 
-One of back-end endpoint for e-commerce website. Built it to improve to handle higher user requests.
+One of back-end endpoint for e-commerce website. Built it to handle higher user requests.
 
 Extract - I already have clean CSVS file, so I can just import it into the pgadmin and seed it
 Transform - I am going to set up validation specifying type of datas (ex. SERIAL, INTEGER, VARCHAR)
